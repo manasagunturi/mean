@@ -1,6 +1,7 @@
 import ErrorHander from "../utils/errorhander.js";
 import User from "../models/userModel.js";
 import sendToken from "../utils/jwtToken.js";
+import  Jwt  from "jsonwebtoken";
 
 
 
@@ -30,7 +31,6 @@ export const registerUser = async (req, res, next) => {
     //     success: true,
     //     token,
     // });
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
 
     sendToken(user, 201, res);
 };
@@ -65,11 +65,21 @@ export const loginUser = async (req, res, next) => {
     // res.status(200).json({
     //     success: true,
     //     token,
-    // }); 
-    res.cookie("token", res.token)
+    // // }); 
+    // res.cookie("token", user)
 
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-    sendToken(user, 200, res);
+    // sendToken(user, 200, res);
+    const token= Jwt.sign({user}, "USER-SECRET-KEY", {expiresIn:86400})
+
+ res.cookie("token", token, {
+    httpOnly:true,
+    maxAge:86400
+ })
+
+ res.status(200).json({
+    message:"login success",
+    data:token
+ })
 }
 
 

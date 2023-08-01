@@ -17,7 +17,12 @@ export const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies (for forms with   
-app.use(cors())
+app.use(cors(
+    {
+        credentials: true,
+        origin: 'http://localhost:4200'
+    }
+))
 
 // Route
 app.use("/api/v1", user);

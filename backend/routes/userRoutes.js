@@ -3,7 +3,8 @@ import {
     registerUser,
     loginUser,
     logout,
-    getAllUsers} from "../controllers/userController.js";
+    getAllUsers,
+    myProfile} from "../controllers/userController.js";
 
 
 const router = express.Router();
@@ -16,6 +17,8 @@ router.route("/login").post(loginUser);
 router.route("/logout").get(logout);
 
 router.route("/users").get(getAllUsers);
+
+router.route('/myprofile').get(myProfile)
 
 
 

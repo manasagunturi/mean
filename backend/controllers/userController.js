@@ -45,6 +45,9 @@ export const loginUser = async (req, res, next) => {
 
     if (!email || !password) {
         return next(new ErrorHander("Please Enter Email & Password", 400));
+        res.json({
+            error:'Please Enter Email & Password'
+        })
     }
 
     const user = await User.findOne({ email }).select("+password");
@@ -71,9 +74,9 @@ export const loginUser = async (req, res, next) => {
     // sendToken(user, 200, res);
     const token= Jwt.sign({user}, "USER-SECRET-KEY", {expiresIn:86400})
 
- res.cookie("token", token, {
+ res.cookie('token', token.toString(), {
     httpOnly:true,
-    maxAge:86400
+    maxAge:86400000
  })
 
  res.status(200).json({
@@ -109,6 +112,13 @@ export const getAllUsers = async (req, res, next) => {
     });
 }
 
+export const myProfile= async (req, res)=>{
+    const user= Jwt.verify(req.cookies.token,'USER-SECRET-KEY')
+    res.status(200).json({
+        success:true,
+        data:user
+    })
+}
 
 
 
